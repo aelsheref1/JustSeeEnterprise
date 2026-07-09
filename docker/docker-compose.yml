@@ -1,0 +1,24 @@
+services:
+  mysql:
+    image: mysql:8.0.41
+    container_name: justsee-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: justsee_erp
+      MYSQL_USER: justsee
+      MYSQL_PASSWORD: justsee123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    container_name: justsee-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_data:
