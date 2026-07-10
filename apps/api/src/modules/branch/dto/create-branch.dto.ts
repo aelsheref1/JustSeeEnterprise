@@ -1,11 +1,13 @@
 import {
-    IsEmail,
     IsOptional,
     IsString,
     Length,
   } from 'class-validator';
   
-  export class CreateCompanyDto {
+  export class CreateBranchDto {
+    @IsString()
+    companyId: string;
+  
     @IsString()
     @Length(2, 100)
     name: string;
@@ -15,8 +17,8 @@ import {
     code: string;
   
     @IsOptional()
-    @IsEmail()
-    email?: string;
+    @IsString()
+    address?: string;
   
     @IsOptional()
     @IsString()
