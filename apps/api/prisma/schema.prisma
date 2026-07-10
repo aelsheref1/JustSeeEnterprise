@@ -8,36 +8,65 @@ datasource db {
 }
 
 model Company {
-  id          String   @id @default(cuid())
-  name        String
-  code        String   @unique
-  email       String?
-  phone       String?
-  isActive    Boolean  @default(true)
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique
+  email     String?
+  phone     String?
+  isActive  Boolean  @default(true)
 
-  branches    Branch[]
+  branches  Branch[]
+  users     User[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("companies")
 }
 
 model Branch {
-  id          String   @id @default(cuid())
-  companyId   String
+  id        String   @id @default(cuid())
+  companyId String
 
-  name        String
-  code        String   @unique
-  address     String?
-  phone       String?
-  isActive    Boolean  @default(true)
+  name      String
+  code      String   @unique
+  address   String?
+  phone     String?
+  isActive  Boolean  @default(true)
 
-  company      Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  users     User[]
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([companyId])
   @@map("branches")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  companyId    String
+  branchId     String
+
+  firstName    String
+  lastName     String
+
+  email        String   @unique
+  passwordHash String
+
+  phone        String?
+  isActive     Boolean  @default(true)
+
+  lastLoginAt  DateTime?
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  branch  Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+  @@index([branchId])
+  @@map("users")
 }
